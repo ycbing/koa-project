@@ -1,27 +1,32 @@
-import City from '../models/cities';
+import Product from '../models/product';
 
-class CitiesControllers {
+class ProductsControllers {
   /* eslint-disable no-param-reassign */
 
   /**
-   * Get all cities
+   * Get all products
    * @param {ctx} Koa Context
    */
   async find(ctx) {
-    ctx.body = await City.find()
+    console.log(ctx.request.query)
+    const queryParams = ctx.request.query
+    const queryConditions = {}
+    const res = await Product.find(queryConditions).skip((queryParams.current - 1) * queryParams.pageSize).limit(queryParams.pageSize)
+    const totalCount = await Product.countDocuments(queryConditions)
+    ctx.body = { data: res, total: totalCount, success: true}
   }
 
   /**
-   * Find a city
+   * Find a product
    * @param {ctx} Koa Context
    */
   async findById(ctx) {
     try {
-      const city = await City.findById(ctx.params.id);
-      if (!city) {
+      const product = await Product.findById(ctx.params.id);
+      if (!product) {
         ctx.throw(404)
       }
-      ctx.body = city
+      ctx.body = product
     } catch (err) {
       if (err.name === 'CastError' || err.name === 'NotFoundError') {
         ctx.throw(404);
@@ -31,29 +36,29 @@ class CitiesControllers {
   }
 
   /**
-   * Add a city
+   * Add a product
    * @param {ctx} Koa Context
    */
   async add(ctx) {
     try {
-      const city = await new City(ctx.request.body).save();
-      ctx.body = city
+      const product = await new Product(ctx.request.body).save();
+      ctx.body = product
     } catch (err) {
       ctx.throw(422)
     }
   }
 
   /**
-   * Update a city
+   * Update a product
    * @param {ctx} Koa Context
    */
   async update(ctx) {
     try {
-      const city = await City.findByIdAndUpdate(ctx.params.id, ctx.request.body)
-      if (!city) {
+      const product = await Product.findByIdAndUpdate(ctx.params.id, ctx.request.body)
+      if (!product) {
         ctx.throw(404)
       }
-      ctx.body = city
+      ctx.body = product
     } catch (err) {
       if (err.name === 'CastError' || err.name === 'NotFoundError') {
         ctx.throw(404)
@@ -63,16 +68,16 @@ class CitiesControllers {
   }
 
   /**
-   * Delete a city
+   * Delete a product
    * @param {ctx} Koa Context
    */
   async delete(ctx) {
     try {
-      const city = await City.findByIdAndRemove(ctx.params.id);
-      if (!city) {
+      const product = await Product.findByIdAndRemove(ctx.params.id);
+      if (!product) {
         ctx.throw(404)
       }
-      ctx.body = city
+      ctx.body = product
     } catch (err) {
       if (err.name === 'CastError' || err.name === 'NotFoundError') {
         ctx.throw(404)
@@ -84,4 +89,4 @@ class CitiesControllers {
   /* eslint-enable no-param-reassign */
 }
 
-export default new CitiesControllers()
+export default new ProductsControllers()

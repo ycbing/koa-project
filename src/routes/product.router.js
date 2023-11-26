@@ -2,31 +2,31 @@ import "babel-polyfill";
 import Router from 'koa-router'
 import { baseApi } from "../config";
 import jwt from "../middlewares/jwt";
-import CitiesControllers from '../controllers/cities';
+import ProductsControllers from '../controllers/product';
 
-const api = 'cities';
+const api = 'products';
 
 const router = new Router();
 
 router.prefix(`/${baseApi}/${api}`);
 
-// GET /api/cities
-router.get('/', CitiesControllers.find);
+// GET /api/products
+router.get('/', ProductsControllers.find);
 
-// POST /api/cities
+// POST /api/products
 // This route is protected, call POST /api/authenticate to get the token
-router.post('/', jwt, CitiesControllers.add);
+router.post('/', jwt, ProductsControllers.add);
 
-// GET /api/cities/id
+// GET /api/products/id
 // This route is protected, call POST /api/authenticate to get the token
-router.get("/:id", jwt, CitiesControllers.findById);
+router.get("/:id", jwt, ProductsControllers.findById);
 
-// PUT /api/cities/id
+// PUT /api/products/id
 // This route is protected, call POST /api/authenticate to get the token
-router.put("/:id", jwt, CitiesControllers.update);
+router.put("/:id", jwt, ProductsControllers.update);
 
-// DELETE /api/cities/id
+// DELETE /api/products/id
 // This route is protected, call POST /api/authenticate to get the token
-router.delete('/:id', jwt, CitiesControllers.delete)
+router.delete('/:id', jwt, ProductsControllers.delete)
 
 export default router;

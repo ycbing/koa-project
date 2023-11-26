@@ -4,9 +4,9 @@ import logger from 'koa-logger'
 import mongoose from 'mongoose'
 import helmet from 'koa-helmet'
 import routing from './routes';
-import { port, connexionString } from './config'
+import { port, connectionString } from './config'
 
-mongoose.connect(connexionString);
+mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', console.error);
 
 // Create Koa Application

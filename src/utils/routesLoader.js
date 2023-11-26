@@ -11,6 +11,7 @@ export default function (dirname) {
       }
       files.forEach(file => {
         const route = require(file); // esline-disable-line global-require, import/no-dynamic-require
+        console.log(route)
         routes.push(route);
       });
       return resolve(routes)
