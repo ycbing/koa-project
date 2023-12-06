@@ -12,12 +12,12 @@ const ProductModel = mongoose.model('ProductModel', {
   lv1: String,
   lv2: String,
   lv3: String,
-   lv4: String,
-   subPlatform: String,
-   dateTime: String,
-   month: String,
-   sales: Number,
-   salesVolume: Number
+  lv4: String,
+  subPlatform: String,
+  dateTime: String,
+  month: String,
+  sales: Number,
+  salesVolume: Number
   // name: String,
   // age: Number,
 });
@@ -43,7 +43,6 @@ const results = [];
 fs.createReadStream('input_data.csv')
   .pipe(csvParse.parse({ columns: true }))
   .on('data', (data) => {
-    // console.log(data)
     // 处理每一行 CSV 数据，并将其推送到结果数组
     results.push({
       lv1: data[Object.keys(data)[0]],
@@ -59,14 +58,8 @@ fs.createReadStream('input_data.csv')
   })
   .on('end', () => {
     // 在读取完成后，将数据保存到 MongoDB
-    ProductModel.insertMany(results, (err) => {
-      if (err) {
-        console.error('Error saving to MongoDB:', err);
-      } else {
-        console.log('Data saved to MongoDB successfully.');
-      }
-
-      // 断开与 MongoDB 的连接
-      mongoose.disconnect();
-     });
+    ProductModel.insertMany(results).then(data => {
+      console.log('Data saved to MongoDB successfully.');
+      mongoose.disconnect()
+    }, error => console.error('Error saving to MongoDB:', error));
   });
