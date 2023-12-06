@@ -3,7 +3,7 @@ const csvParse = require('csv-parse');
 const mongoose = require('mongoose');
 
 // 连接到 MongoDB 数据库
-mongoose.connect('mongodb://localhost:27017/product', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://mongo:27017/product', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // 定义 MongoDB 模型（假设有一个名为 "YourModel" 的模型）
 const ProductModel = mongoose.model('ProductModel', {
